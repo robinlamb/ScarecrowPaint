@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://models/barn.glb" type="PackedScene" id=1]
+[ext_resource path="res://modelscenes/barn.gd" type="Script" id=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 4.81276, 1.78571, 0.756987 )
+
+[sub_resource type="SphereShape" id=2]
+radius = 8.84663
+
+[node name="barn" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="StaticBody" type="StaticBody" parent="." index="1"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody" index="0"]
+transform = Transform( 1, 0, 0, 0, 2.39711, 0, 0, 0, 8.04383, 0, 4.17502, 0 )
+shape = SubResource( 1 )
+
+[node name="InvadedArea" type="Area" parent="." index="2"]
+transform = Transform( 0.98078, 0, 0, 0, 1, 0, 0, 0, 0.976236, 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="InvadedArea" index="0"]
+shape = SubResource( 2 )
+
+[connection signal="body_entered" from="InvadedArea" to="." method="_on_InvadedArea_body_entered"]

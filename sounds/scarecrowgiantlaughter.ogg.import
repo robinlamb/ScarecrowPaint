@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/scarecrowgiantlaughter.ogg-e0ab6a79d4da6869c6a67d33b821e34f.oggstr"
+
+[deps]
+
+source_file="res://sounds/scarecrowgiantlaughter.ogg"
+dest_files=[ "res://.import/scarecrowgiantlaughter.ogg-e0ab6a79d4da6869c6a67d33b821e34f.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,319 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://player/shoot/Shoot.gd" type="Script" id=1]
+[ext_resource path="res://player/shoot/ImpactRed.tscn" type="PackedScene" id=2]
+[ext_resource path="res://player/shoot/Impact.tscn" type="PackedScene" id=3]
+[ext_resource path="res://player/shoot/paintballshot.ogg" type="AudioStream" id=4]
+[ext_resource path="res://font/Roboto-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://font/Fresca-Regular.ttf" type="DynamicFontData" id=10]
+[ext_resource path="res://player/Theme.tres" type="Theme" id=13]
+[ext_resource path="res://modelscenes/paintballgun.tscn" type="PackedScene" id=14]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+outline_size = 2
+font_data = ExtResource( 10 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 50
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 6 )
+
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 2 )
+
+[node name="Shoot" type="Spatial" groups=[
+"game",
+]]
+script = ExtResource( 1 )
+rifle_model = ExtResource( 14 )
+impact = ExtResource( 3 )
+impact_red = ExtResource( 2 )
+rifle_shoot_sound = ExtResource( 4 )
+
+[node name="BulletSpread" type="Position3D" parent="."]
+
+[node name="RayCast" type="RayCast" parent="BulletSpread"]
+enabled = true
+cast_to = Vector3( 0, 0, -1000 )
+collision_mask = 76
+collide_with_areas = true
+
+[node name="Position3D" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, -0.1, -0.2 )
+
+[node name="SwitchAndAttack" type="Position3D" parent="Position3D"]
+
+[node name="Bobbing" type="Position3D" parent="Position3D/SwitchAndAttack"]
+
+[node name="LookAtLerp" type="Position3D" parent="Position3D/SwitchAndAttack/Bobbing"]
+
+[node name="Sway" type="Position3D" parent="Position3D/SwitchAndAttack/Bobbing/LookAtLerp"]
+
+[node name="MagazineSpawn" type="Position3D" parent="Position3D/SwitchAndAttack/Bobbing/LookAtLerp/Sway"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.11, -0.18 )
+
+[node name="Weapon" type="Spatial" parent="Position3D/SwitchAndAttack/Bobbing/LookAtLerp/Sway"]
+
+[node name="ShellSpawn" type="Position3D" parent="Position3D/SwitchAndAttack/Bobbing/LookAtLerp/Sway/Weapon"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025, 0.01, -0.2 )
+
+[node name="OmniLight" type="OmniLight" parent="Position3D/SwitchAndAttack/Bobbing/LookAtLerp/Sway/Weapon"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7 )
+light_energy = 0.0
+shadow_enabled = true
+omni_range = 2.0
+
+[node name="paintballgun" parent="Position3D/SwitchAndAttack/Bobbing/LookAtLerp/Sway/Weapon" instance=ExtResource( 14 )]
+transform = Transform( 0.0490206, 0, 0.00984779, 0, 0.05, 0, -0.00984779, 0, 0.0490206, -0.0425531, -0.0104481, 0.0501564 )
+
+[node name="MeleeAttack" type="Position3D" parent="Position3D/SwitchAndAttack"]
+
+[node name="LookAt" type="Position3D" parent="Position3D"]
+
+[node name="HUD" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AmmoBackgroundColor" type="ColorRect" parent="HUD"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -360.667
+margin_top = -64.0
+margin_right = -90.6674
+margin_bottom = -4.0
+color = Color( 0, 0, 0, 0.25098 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AmmoBackgroundColor2" type="ColorRect" parent="HUD"]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 90.0
+margin_top = -64.0
+margin_right = 305.0
+margin_bottom = -4.0
+color = Color( 0, 0, 0, 0.25098 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BackgroundColor" type="VBoxContainer" parent="HUD"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1012.66
+margin_top = -609.004
+margin_right = -887.657
+margin_bottom = -508.004
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect1" type="ColorRect" parent="HUD/BackgroundColor"]
+margin_top = 35.0
+margin_right = 125.0
+margin_bottom = 66.0
+rect_min_size = Vector2( 0, 31 )
+color = Color( 0, 0, 0, 0.25098 )
+
+[node name="ColorRect2" type="ColorRect" parent="HUD/BackgroundColor"]
+margin_top = 70.0
+margin_right = 125.0
+margin_bottom = 101.0
+rect_min_size = Vector2( 0, 31 )
+color = Color( 0, 0, 0, 0.1 )
+
+[node name="ColorRect3" type="ColorRect" parent="HUD/BackgroundColor"]
+visible = false
+margin_top = 70.0
+margin_right = 146.0
+margin_bottom = 101.0
+rect_min_size = Vector2( 0, 31 )
+color = Color( 0, 0, 0, 0.25098 )
+
+[node name="WeaponSelected" type="VBoxContainer" parent="HUD"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1009.66
+margin_top = -644.004
+margin_right = -887.657
+margin_bottom = -508.004
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Weapon1" type="Label" parent="HUD/WeaponSelected"]
+margin_top = 74.0
+margin_right = 122.0
+margin_bottom = 102.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.717647, 0.180392, 0.756863, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+text = "1  Purple"
+
+[node name="Weapon2" type="Label" parent="HUD/WeaponSelected"]
+modulate = Color( 1, 1, 1, 0.501961 )
+margin_top = 106.0
+margin_right = 122.0
+margin_bottom = 136.0
+custom_colors/font_color = Color( 0.109804, 0.945098, 0.0862745, 1 )
+text = "2  Green"
+
+[node name="Weapon3" type="Label" parent="HUD/WeaponSelected"]
+visible = false
+modulate = Color( 1, 1, 1, 0.501961 )
+margin_top = 105.0
+margin_right = 122.0
+margin_bottom = 136.0
+text = "3     Knife"
+
+[node name="HealthText" type="Label" parent="HUD"]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 100.0
+margin_top = -40.0
+margin_right = 173.0
+margin_bottom = -9.0
+text = "Health"
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AmmoText" type="Label" parent="HUD"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -350.0
+margin_top = -40.0
+margin_right = -230.0
+margin_bottom = -9.0
+text = "Ammo     "
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DisplayAmmo" type="HBoxContainer" parent="HUD"]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -349.0
+margin_top = -64.0
+margin_right = -100.0
+margin_bottom = -4.0
+theme = SubResource( 3 )
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AmmoText" type="Label" parent="HUD/DisplayAmmo"]
+visible = false
+margin_left = 193.0
+margin_right = 249.0
+margin_bottom = 60.0
+text = "30"
+
+[node name="Slash" type="Label" parent="HUD/DisplayAmmo"]
+visible = false
+margin_left = 168.0
+margin_right = 189.0
+margin_bottom = 60.0
+text = "/"
+
+[node name="ClipText" type="Label" parent="HUD/DisplayAmmo"]
+visible = false
+margin_left = 193.0
+margin_right = 249.0
+margin_bottom = 60.0
+text = "90"
+
+[node name="DisplayHealth" type="HBoxContainer" parent="HUD"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 210.0
+margin_top = -64.0
+margin_right = 338.0
+margin_bottom = -4.0
+theme = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Health" type="Label" parent="HUD/DisplayHealth"]
+visible = false
+margin_right = 84.0
+margin_bottom = 60.0
+text = "100"
+
+[node name="ReloadTip" type="Label" parent="HUD"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -135.0
+margin_top = 35.0
+margin_right = 136.0
+margin_bottom = 71.0
+text = "Reload"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShootTween" type="Tween" parent="."]
+
+[node name="ReloadTween" type="Tween" parent="."]
+
+[node name="HBobbingTween" type="Tween" parent="."]
+
+[node name="VBobbingTween" type="Tween" parent="."]
+
+[node name="SwitchWeaponTween" type="Tween" parent="."]
+
+[node name="InterfaceTween" type="Tween" parent="."]
+
+[node name="BackgroundColorTween" type="Tween" parent="."]
+
+[node name="SelectionTween" type="Tween" parent="."]
+
+[node name="ReloadTipTween" type="Tween" parent="."]
+
+[node name="FireRateTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="RecoilTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="SpawnMagazineTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="tween_all_completed" from="ReloadTween" to="." method="_on_ReloadTween_tween_all_completed"]
+[connection signal="timeout" from="RecoilTimer" to="." method="_on_RecoilTimer_timeout"]
+[connection signal="timeout" from="SpawnMagazineTimer" to="." method="_on_SpawnMagazineTimer_timeout"]
